@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/kakeibo-react/static/css/main.27ea70c5.css",
-    "main.js": "/kakeibo-react/static/js/main.6ad3cbe2.js",
+    "main.js": "/kakeibo-react/static/js/main.49c6f3c0.js",
     "static/media/noto-sans-jp-all-700-normal.woff": "/kakeibo-react/static/media/noto-sans-jp-all-700-normal.40ad47c92561ae272e49.woff",
     "static/media/noto-sans-jp-all-400-normal.woff": "/kakeibo-react/static/media/noto-sans-jp-all-400-normal.32e64d9d97b5a91f109e.woff",
     "static/media/noto-sans-jp-6-700-normal.woff2": "/kakeibo-react/static/media/noto-sans-jp-6-700-normal.44f04941752f65aa1f23.woff2",
@@ -246,10 +246,10 @@
     "static/media/noto-sans-jp-117-400-normal.woff2": "/kakeibo-react/static/media/noto-sans-jp-117-400-normal.aa4358872611a7833e43.woff2",
     "index.html": "/kakeibo-react/index.html",
     "main.27ea70c5.css.map": "/kakeibo-react/static/css/main.27ea70c5.css.map",
-    "main.6ad3cbe2.js.map": "/kakeibo-react/static/js/main.6ad3cbe2.js.map"
+    "main.49c6f3c0.js.map": "/kakeibo-react/static/js/main.49c6f3c0.js.map"
   },
   "entrypoints": [
     "static/css/main.27ea70c5.css",
-    "static/js/main.6ad3cbe2.js"
+    "static/js/main.49c6f3c0.js"
   ]
 }
