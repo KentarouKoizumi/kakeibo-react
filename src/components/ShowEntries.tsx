@@ -31,10 +31,10 @@ export default function ShowEntries() {
 
   const deleteData = (id: string) => {
     axios
-      .post("/delete-data", {id: id})
+      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/delete-data", {id: id})
       .then((res) => {
         axios
-          .post("/get-month-datas", {year: month[0], month: month[1]})
+          .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-datas", {year: month[0], month: month[1]})
           .then((res) => {
             setEntries(res.data)
           })

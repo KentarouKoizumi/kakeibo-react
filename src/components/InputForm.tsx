@@ -25,7 +25,7 @@ export default function InputForm() {
 
   const updateDatas = async () => {
     await axios
-      .post("/get-month-statistics", {year: month[0], month: month[1]})
+      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-statistics", {year: month[0], month: month[1]})
       .then((res) => {
         setStatistics(res.data.totals)
       })
@@ -33,7 +33,7 @@ export default function InputForm() {
         console.log(err)
       })
     await axios
-      .post("/get-month-datas", {year: month[0], month: month[1]})
+      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-datas", {year: month[0], month: month[1]})
       .then((res) => {
         setEntries(res.data)
       })
@@ -44,7 +44,7 @@ export default function InputForm() {
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     data.price = Number(data.price)
-    await axios.post("/post-data", data)
+    await axios.post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/post-data", data)
     .then(async (res) => {
       await updateDatas()
     })
