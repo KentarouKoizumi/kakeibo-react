@@ -33,10 +33,12 @@ const App = () => {
   const [ month, setMonth ] = useState<number[]>([now.getFullYear(), now.getMonth() + 1])
   const [entries, setEntries] = useState<Entry[]>([])
   const [statistics, setStatistics] = useState<number[]>([])
+  const url = "https://asia-northeast1-tonal-land-364800.cloudfunctions.net"
+  console.log(url)
 
   useEffect(() => {
     axios
-      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-statistics", {year: month[0], month: month[1]})
+      .post(url + "/get-month-statistics", {year: month[0], month: month[1]})
       .then((res) => {
         setStatistics(res.data.totals)
       })
@@ -44,7 +46,7 @@ const App = () => {
         console.log(err)
       })
     axios
-      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-datas", {year: month[0], month: month[1]})
+      .post(url + "/get-month-datas", {year: month[0], month: month[1]})
       .then((res) => {
         setEntries(res.data)
       })
