@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { MonthContext, EntriesContext } from '../App';
+import { EntriesContext, updateContext } from '../App';
 import axios from 'axios';
 import { Table, TableCell, TableRow, TableBody, Box, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,8 +11,9 @@ import { useMediaQuery } from '@mui/material';
 
 export default function ShowEntries() {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const {month, setMonth} = useContext(MonthContext);
-  const {entries, setEntries} = useContext(EntriesContext);
+  const {entries} = useContext(EntriesContext);
+  const {updateDatas} = useContext(updateContext);
+
 
   const categoriesTrans:{[key: string]: string} = {
     'food': '食費',
@@ -32,15 +33,8 @@ export default function ShowEntries() {
   const deleteData = (id: string) => {
     axios
       .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/delete-data", {id: id})
-      .then((res) => {
-        axios
-          .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-datas", {year: month[0], month: month[1]})
-          .then((res) => {
-            setEntries(res.data)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+      .then(() => {
+        updateDatas()
       })
       .catch((err) => {
         console.log(err)

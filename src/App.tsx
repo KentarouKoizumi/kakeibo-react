@@ -27,6 +27,9 @@ export const EntriesContext = createContext({} as {
 export const StatisticsContext = createContext({} as {
   statistics: number[], setStatistics: React.Dispatch<React.SetStateAction<number[]>>
 })
+export const updateContext = createContext({} as {
+  updateDatas: () => void
+})
 
 const App = () => {
   const now = new Date()
@@ -34,7 +37,25 @@ const App = () => {
   const [entries, setEntries] = useState<Entry[]>([])
   const [statistics, setStatistics] = useState<number[]>([])
   const url = "https://asia-northeast1-tonal-land-364800.cloudfunctions.net"
-  console.log(url)
+
+  const updateDatas = async () => {
+    await axios
+      .post(`${url}/get-month-statistics`, {year: month[0], month: month[1]})
+      .then((res) => {
+        setStatistics(res.data.totals)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    await axios
+      .post(`${url}/get-month-datas`, {year: month[0], month: month[1]})
+      .then((res) => {
+        setEntries(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
     axios
@@ -74,13 +95,9 @@ const App = () => {
           </StatisticsContext.Provider>
         </Paper>
         <Paper sx={{ width: "100%", p:"2em" }} elevation={3} >
-          <StatisticsContext.Provider value={{statistics, setStatistics}}>
-            <EntriesContext.Provider value={{entries, setEntries}}>
-              <MonthContext.Provider value={{month, setMonth}}>
-                <InputForm></InputForm>
-              </MonthContext.Provider>
-            </EntriesContext.Provider>
-          </StatisticsContext.Provider>
+          <updateContext.Provider value={{updateDatas}}>
+            <InputForm></InputForm>
+          </updateContext.Provider>
         </Paper>
         <Paper sx={{ width: "100%", p: "2em"}} elevation={3}>
           <Typography variant='h5' sx={{ textDecoration: 'underline' }}>
@@ -88,7 +105,9 @@ const App = () => {
           </Typography>
           <EntriesContext.Provider value={{entries, setEntries}}>
             <MonthContext.Provider value={{month, setMonth}}>
+            <updateContext.Provider value={{updateDatas}}>
               <ShowEntries />
+            </updateContext.Provider>
             </MonthContext.Provider>
           </EntriesContext.Provider>
         </Paper>

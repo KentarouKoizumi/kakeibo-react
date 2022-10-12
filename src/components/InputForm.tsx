@@ -5,7 +5,7 @@ import { useContext } from 'react'
 import axios from 'axios'
 import { useMediaQuery } from '@mui/material';
 
-import { StatisticsContext, EntriesContext, MonthContext } from '../App';
+import { updateContext } from '../App';
 
 
 interface FormInput {
@@ -18,35 +18,16 @@ interface FormInput {
 export default function InputForm() {
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const { register, handleSubmit } = useForm<FormInput>()
-  const {statistics, setStatistics} = useContext(StatisticsContext);
-  const {entries, setEntries} = useContext(EntriesContext);
-  const {month, setMonth} = useContext(MonthContext);
+  const { register, handleSubmit, reset } = useForm<FormInput>()
+  const { updateDatas } = useContext(updateContext)
 
-  const updateDatas = async () => {
-    await axios
-      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-statistics", {year: month[0], month: month[1]})
-      .then((res) => {
-        setStatistics(res.data.totals)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    await axios
-      .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/get-month-datas", {year: month[0], month: month[1]})
-      .then((res) => {
-        setEntries(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     data.price = Number(data.price)
     await axios.post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/post-data", data)
-    .then(async (res) => {
+    .then(async () => {
       await updateDatas()
+      reset({ category: 'food', name: '', price: 0, memo: '' })
     })
     .catch((err) => {
       console.log(err)
