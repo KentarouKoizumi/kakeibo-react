@@ -53,7 +53,7 @@ export default function ShowEntries() {
                   <>
                   <TableCell component="th" scope="row" sx={{ pl: 0, pr: "0.25em" }}>
                     <Typography variant="body1">
-                      {new Date(entries[0].createdAt._seconds * 1000).getMonth() + 1}/{new Date(entries[0].createdAt._seconds * 1000).getDate()}
+                      {new Date(entry.createdAt._seconds * 1000).getMonth() + 1}/{new Date(entry.createdAt._seconds * 1000).getDate()}
                     </Typography>
                   </TableCell>
                   <TableCell align="left" sx={{ pl: 0, pr: "0.25em" }}>
@@ -87,7 +87,7 @@ export default function ShowEntries() {
                   <>
                   <TableCell component="th" scope="row">
                     <Typography variant="body1">
-                      {new Date(entries[0].createdAt._seconds * 1000).getMonth() + 1}/{new Date(entries[0].createdAt._seconds * 1000).getDate()}
+                      {new Date(entry.createdAt._seconds * 1000).getMonth() + 1}/{new Date(entry.createdAt._seconds * 1000).getDate()}
                     </Typography>
                   </TableCell>
                   <TableCell align="left">
