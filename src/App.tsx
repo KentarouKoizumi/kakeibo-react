@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Paper, Stack } from '@mui/material'
+import { Container, Box, Typography, Paper, Stack, CircularProgress, LinearProgress } from '@mui/material'
 import { useMediaQuery } from '@mui/material';
 import {Helmet, HelmetProvider} from 'react-helmet-async'
 import { useState, createContext, useEffect } from 'react'
@@ -37,45 +37,38 @@ const App = () => {
   const now = new Date()
   const [ month, setMonth ] = useState<number[]>([now.getFullYear(), now.getMonth() + 1])
   const [entries, setEntries] = useState<Entry[]>([])
+  const [nowLoadingEntries, setNowLoadingEntries] = useState<boolean>(false)
   const [statistics, setStatistics] = useState<number[]>([])
+  const [nowLoadingStatistics, setNowLoadingStatistics] = useState<boolean>(false)
   const url = "https://asia-northeast1-tonal-land-364800.cloudfunctions.net"
 
   const updateDatas = async () => {
+    setNowLoadingEntries(true)
+    setNowLoadingStatistics(true)
     await axios
       .post(`${url}/get-month-statistics`, {year: month[0], month: month[1]})
       .then((res) => {
         setStatistics(res.data.totals)
+        setNowLoadingStatistics(false)
       })
       .catch((err) => {
         console.log(err)
+        setNowLoadingStatistics(false)
       })
     await axios
       .post(`${url}/get-month-datas`, {year: month[0], month: month[1]})
       .then((res) => {
         setEntries(res.data)
+        setNowLoadingEntries(false)
       })
       .catch((err) => {
         console.log(err)
+        setNowLoadingEntries(false)
       })
   }
 
   useEffect(() => {
-    axios
-      .post(url + "/get-month-statistics", {year: month[0], month: month[1]})
-      .then((res) => {
-        setStatistics(res.data.totals)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    axios
-      .post(url + "/get-month-datas", {year: month[0], month: month[1]})
-      .then((res) => {
-        setEntries(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    updateDatas()
   }, [month])
   return (
     <>
@@ -87,9 +80,15 @@ const App = () => {
       </Helmet>
       </HelmetProvider>
       <Container maxWidth="xl">
-        { !isMobile && <Box sx={{ height: "6vh" }}/> }
+        <Box sx={{ height: !isMobile ? "2em" : "1em" }}/>
         <Stack spacing={2}>
-        <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3}>
+        <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }`, position:"relative" }} elevation={3}>
+          { nowLoadingStatistics &&
+          <>
+            <Box sx={{width:"100%", height:"100%", backgroundColor:"#f5f5f5", opacity:.3 , position:"absolute", top:"50%", left: "50%", transform: "translateY(-50%) translateX(-50%)"}}/>
+            <CircularProgress sx={{position:"absolute", top:"50%", left: "50%", transform: "translateY(-50%) translateX(-50%)"}} />
+          </>
+          }
           <StatisticsContext.Provider value={{statistics, setStatistics}}>
             <MonthContext.Provider value={{month, setMonth}}>
               <ShowStatistics />
@@ -105,6 +104,9 @@ const App = () => {
           <Typography variant='h5' sx={{ textDecoration: 'underline' }}>
             履歴
           </Typography>
+          { nowLoadingEntries &&
+            <LinearProgress sx={{mt:"1em"}}/>
+          }
           <EntriesContext.Provider value={{entries, setEntries}}>
             <MonthContext.Provider value={{month, setMonth}}>
             <updateContext.Provider value={{updateDatas}}>

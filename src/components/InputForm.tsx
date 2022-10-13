@@ -1,7 +1,7 @@
 import { Box, Select, TextField, Button, Typography, MenuItem, InputLabel, FormControl, Stack } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2';
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
 import { useMediaQuery } from '@mui/material';
 
@@ -20,13 +20,15 @@ export default function InputForm() {
 
   const { register, handleSubmit, reset } = useForm<FormInput>()
   const { updateDatas } = useContext(updateContext)
-
+  const [ nowUploading, setNowUploading ] = useState(false)
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    setNowUploading(true)
     data.price = Number(data.price)
     await axios.post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/post-data", data)
     .then(async () => {
       await updateDatas()
+      setNowUploading(false)
       reset({ category: 'food', name: '', price: 0, memo: '' })
     })
     .catch((err) => {
@@ -92,6 +94,7 @@ export default function InputForm() {
           <Button
             variant="contained"
             sx={{ width: "100%", height:"100%"}}
+            disabled={nowUploading}
             onClick={handleSubmit(onSubmit)}
           >SUBMIT
           </Button>
@@ -136,6 +139,7 @@ export default function InputForm() {
           <Button
             variant="contained"
             sx={{ width: "100%", height:"100%"}}
+            disabled={nowUploading}
             onClick={handleSubmit(onSubmit)}
           >SUBMIT
           </Button>

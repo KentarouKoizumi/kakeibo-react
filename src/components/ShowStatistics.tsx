@@ -66,7 +66,6 @@ export default function ShowStatistics() {
 
   return (
     <>
-    <Box sx={{height: "3em"}}/>
       <Grid container spacing={0} alignItems="center" direction="column">
         <Grid>
           <Typography>
