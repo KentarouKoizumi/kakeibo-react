@@ -42,41 +42,95 @@ export default function ShowEntries() {
   }
   return (
     <>
-      <Table>
+      <Table sx={{ width:"100%"}}>
       <TableBody>
           {entries.map((entry) => (
             <TableRow
               key={entry.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                <Typography variant="body1">
-                  {new Date(entries[0].createdAt._seconds * 1000).getMonth() + 1}/{new Date(entries[0].createdAt._seconds * 1000).getDate()}
-                </Typography>
-              </TableCell>
-              <TableCell align="left">
                 { isMobile ? (
-                  <Stack direction="row">
-                    <Box sx={{
-                      width: "0.5em",
-                      height: "1.5em",
-                      backgroundColor: categoryColors[entry.category],
-                    }}/>
-                    <Box sx={{
-                      width: "0.5em",
-                      height: "1.5em",
-                    }}/>
+                  <>
+                  <TableCell component="th" scope="row" sx={{ pl: 0, pr: "0.25em" }}>
+                    <Typography variant="body1">
+                      {new Date(entries[0].createdAt._seconds * 1000).getMonth() + 1}/{new Date(entries[0].createdAt._seconds * 1000).getDate()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left" sx={{ pl: 0, pr: "0.25em" }}>
+                    <Stack direction="row">
+                      <Box sx={{
+                        width: "0.5em",
+                        height: "1.5em",
+                        backgroundColor: categoryColors[entry.category],
+                      }}/>
+                      <Box sx={{
+                        width: "0.5em",
+                        height: "1.5em",
+                      }}/>
+                      <Typography variant="body1" noWrap sx={{ maxWidth:"13em", overflow: "hidden"}}>
+                        {entry.name}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell align="right" sx={{ pl: 0, pr: "0.25em" }}>
+                    <Typography variant="body1">
+                      ￥{entry.price.toLocaleString()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right" sx={{ px: 0 }}>
+                    <IconButton onClick={ ()=>deleteData(entry.id) }>
+                      <DeleteIcon sx={{ color: red.A700 }}/>
+                    </IconButton>
+                  </TableCell>
+                  </>
+                ) : (
+                  <>
+                  <TableCell component="th" scope="row">
+                    <Typography variant="body1">
+                      {new Date(entries[0].createdAt._seconds * 1000).getMonth() + 1}/{new Date(entries[0].createdAt._seconds * 1000).getDate()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="left">
                     <Typography variant="body1">
                       {entry.name}
                     </Typography>
-                  </Stack>
-                ) : (
-                  <Typography variant="body1">
-                    {entry.name}
-                  </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Stack direction="row">
+                      <Box sx={{
+                        width: "0.5em",
+                        height: "1.5em",
+                        backgroundColor: categoryColors[entry.category],
+                      }}/>
+                      <Box sx={{
+                        width: "0.5em",
+                        height: "1.5em",
+                      }}/>
+                      <Typography variant="body1">
+                        {categoriesTrans[entry.category]}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+
+                  <TableCell align="right">
+                    <Typography variant="body1">
+                      {entry.memo}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="body1">
+                      ￥{entry.price.toLocaleString()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={ ()=>deleteData(entry.id) }>
+                      <DeleteIcon sx={{ color: red.A700 }}/>
+                    </IconButton>
+                  </TableCell>
+                  </>
                 )}
-              </TableCell>
-              {!isMobile && (
+              {/* </TableCell> */}
+              {/* {!isMobile && (
                 <>
                   <TableCell align="right">
                     <Stack direction="row">
@@ -94,15 +148,15 @@ export default function ShowEntries() {
                       </Typography>
                     </Stack>
                   </TableCell>
-                  
+
                     <TableCell align="right">
                       <Typography variant="body1">
                         {entry.memo}
                       </Typography>
                     </TableCell>
                 </>
-              )}
-              <TableCell align="right">
+              )} */}
+              {/* <TableCell align="right">
                 <Typography variant="body1">
                   ￥{entry.price.toLocaleString()}
                 </Typography>
@@ -111,7 +165,7 @@ export default function ShowEntries() {
                 <IconButton onClick={ ()=>deleteData(entry.id) }>
                   <DeleteIcon sx={{ color: red.A700 }}/>
                 </IconButton>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>

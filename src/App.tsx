@@ -1,9 +1,9 @@
 import { Container, Box, Typography, Paper, Stack } from '@mui/material'
+import { useMediaQuery } from '@mui/material';
 import {Helmet, HelmetProvider} from 'react-helmet-async'
 import { useState, createContext, useEffect } from 'react'
 import axios from 'axios'
 
-import styles from './styles/Home.module.css'
 import InputForm from './components/InputForm'
 import ShowEntries from './components/ShowEntries'
 import ShowStatistics from './components/ShowStatistics'
@@ -32,6 +32,8 @@ export const updateContext = createContext({} as {
 })
 
 const App = () => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   const now = new Date()
   const [ month, setMonth ] = useState<number[]>([now.getFullYear(), now.getMonth() + 1])
   const [entries, setEntries] = useState<Entry[]>([])
@@ -76,7 +78,7 @@ const App = () => {
       })
   }, [month])
   return (
-    <div className={styles.container}>
+    <>
       <HelmetProvider>
       <Helmet>
         <title>KakeiBO</title>
@@ -85,21 +87,21 @@ const App = () => {
       </Helmet>
       </HelmetProvider>
       <Container maxWidth="xl">
-        <Box sx={{ height: "6vh" }}/>
+        { !isMobile && <Box sx={{ height: "6vh" }}/> }
         <Stack spacing={2}>
-        <Paper sx={{ /*width:"18em", height: "88vh", position:"fixed"*/}} elevation={3}>
+        <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3}>
           <StatisticsContext.Provider value={{statistics, setStatistics}}>
             <MonthContext.Provider value={{month, setMonth}}>
               <ShowStatistics />
             </MonthContext.Provider>
           </StatisticsContext.Provider>
         </Paper>
-        <Paper sx={{ width: "100%", p:"2em" }} elevation={3} >
+        <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3} >
           <updateContext.Provider value={{updateDatas}}>
             <InputForm></InputForm>
           </updateContext.Provider>
         </Paper>
-        <Paper sx={{ width: "100%", p: "2em"}} elevation={3}>
+        <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3}>
           <Typography variant='h5' sx={{ textDecoration: 'underline' }}>
             履歴
           </Typography>
@@ -113,7 +115,7 @@ const App = () => {
         </Paper>
         </Stack>
       </Container>
-    </div>
+    </>
   )
 }
 
