@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { EntriesContext, updateContext } from '../App';
+import { EntriesContext, updateContext, LoadingContext } from '../App';
 import axios from 'axios';
 import { Table, TableCell, TableRow, TableBody, Box, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,6 +13,7 @@ export default function ShowEntries() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const {entries} = useContext(EntriesContext);
   const {updateDatas} = useContext(updateContext);
+  const {setNowLoadingEntries, setNowLoadingStatistics} = useContext(LoadingContext);
 
 
   const categoriesTrans:{[key: string]: string} = {
@@ -31,6 +32,8 @@ export default function ShowEntries() {
   }
 
   const deleteData = (id: string) => {
+    setNowLoadingEntries(true);
+    setNowLoadingStatistics(true);
     axios
       .post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/delete-data", {id: id})
       .then(() => {

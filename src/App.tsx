@@ -30,6 +30,9 @@ export const StatisticsContext = createContext({} as {
 export const updateContext = createContext({} as {
   updateDatas: () => void
 })
+export const LoadingContext = createContext({} as {
+  setNowLoadingEntries: React.Dispatch<React.SetStateAction<boolean>>, setNowLoadingStatistics: React.Dispatch<React.SetStateAction<boolean>>
+})
 
 const App = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -97,7 +100,9 @@ const App = () => {
         </Paper>
         <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3} >
           <updateContext.Provider value={{updateDatas}}>
-            <InputForm></InputForm>
+            <LoadingContext.Provider value={{setNowLoadingEntries, setNowLoadingStatistics}}>
+              <InputForm></InputForm>
+            </LoadingContext.Provider>
           </updateContext.Provider>
         </Paper>
         <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3}>
@@ -109,9 +114,11 @@ const App = () => {
           }
           <EntriesContext.Provider value={{entries, setEntries}}>
             <MonthContext.Provider value={{month, setMonth}}>
-            <updateContext.Provider value={{updateDatas}}>
-              <ShowEntries />
-            </updateContext.Provider>
+              <updateContext.Provider value={{updateDatas}}>
+                <LoadingContext.Provider value={{setNowLoadingEntries, setNowLoadingStatistics}}>
+                  <ShowEntries />
+                </LoadingContext.Provider>
+              </updateContext.Provider>
             </MonthContext.Provider>
           </EntriesContext.Provider>
         </Paper>

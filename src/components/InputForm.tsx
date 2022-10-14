@@ -5,7 +5,7 @@ import { useContext, useState } from 'react'
 import axios from 'axios'
 import { useMediaQuery } from '@mui/material';
 
-import { updateContext } from '../App';
+import { updateContext, LoadingContext } from '../App';
 
 
 interface FormInput {
@@ -20,10 +20,13 @@ export default function InputForm() {
 
   const { register, handleSubmit, reset } = useForm<FormInput>()
   const { updateDatas } = useContext(updateContext)
+  const { setNowLoadingEntries, setNowLoadingStatistics } = useContext(LoadingContext)
   const [ nowUploading, setNowUploading ] = useState(false)
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     setNowUploading(true)
+    setNowLoadingEntries(true)
+    setNowLoadingStatistics(true)
     data.price = Number(data.price)
     await axios.post("https://asia-northeast1-tonal-land-364800.cloudfunctions.net/post-data", data)
     .then(async () => {

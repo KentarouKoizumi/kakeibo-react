@@ -90,21 +90,17 @@ export default function ShowStatistics() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        sx={{ fontWeight: 'bold', fontSize: '2rem', color: '#000000', textDecoration: 'underline' }}
-      >
-          ￥ {statistics.reduce((a, b) => a + b, 0).toLocaleString()}
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
       >
         <Stack direction={ isMobile ? "column" : "row"} spacing={5}>
           <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
+            sx={{ position: "relative" }}
           >
+            <Typography variant="h4" sx={{ fontWeight: "bold", textDecoration:"underline", position: "absolute", top:"50%", left: "50%", transform: "translateY(-50%) translateX(-50%)" }}>
+              ￥ {statistics.reduce((a, b) => a + b, 0).toLocaleString()}
+            </Typography>
             <Doughnut
               options={options}
               data={data}
