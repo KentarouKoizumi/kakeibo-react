@@ -5,7 +5,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useMediaQuery } from '@mui/material';
 
 import { useContext } from 'react';
-import { MonthContext } from '../App';
+import { MonthContext, LoadingContext } from '../App';
 import { StatisticsContext } from '../App';
 
 import { Doughnut } from 'react-chartjs-2';
@@ -13,6 +13,7 @@ import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip);
 
 export default function ShowStatistics() {
+  const { nowLoadingStatistics } = useContext(LoadingContext);
   const {month, setMonth} = useContext(MonthContext);
   const previousMonth = () => {
     if (month[1] === 1) {
@@ -98,9 +99,11 @@ export default function ShowStatistics() {
             alignItems="center"
             sx={{ position: "relative" }}
           >
-            <Typography variant="h4" sx={{ fontWeight: "bold", textDecoration:"underline", position: "absolute", top:"50%", left: "50%", transform: "translateY(-50%) translateX(-50%)" }}>
+            { !nowLoadingStatistics &&
+            <Typography variant="h5" sx={{ fontWeight: "bold", textDecoration:"underline", position: "absolute", top:"50%", left: "50%", transform: "translateY(-50%) translateX(-50%)" }}>
               ￥ {statistics.reduce((a, b) => a + b, 0).toLocaleString()}
             </Typography>
+            }
             <Doughnut
               options={options}
               data={data}

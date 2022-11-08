@@ -31,7 +31,7 @@ export const updateContext = createContext({} as {
   updateDatas: () => void
 })
 export const LoadingContext = createContext({} as {
-  setNowLoadingEntries: React.Dispatch<React.SetStateAction<boolean>>, setNowLoadingStatistics: React.Dispatch<React.SetStateAction<boolean>>
+  setNowLoadingEntries: React.Dispatch<React.SetStateAction<boolean>>, setNowLoadingStatistics: React.Dispatch<React.SetStateAction<boolean>>, nowLoadingStatistics: boolean
 })
 
 const App = () => {
@@ -82,6 +82,7 @@ const App = () => {
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-size:90px;%22>📝</text></svg>"/>
       </Helmet>
       </HelmetProvider>
+      <LoadingContext.Provider value={{setNowLoadingEntries, setNowLoadingStatistics, nowLoadingStatistics}}>
       <Container maxWidth="xl">
         <Box sx={{ height: !isMobile ? "2em" : "1em" }}/>
         <Stack spacing={2}>
@@ -100,9 +101,7 @@ const App = () => {
         </Paper>
         <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3} >
           <updateContext.Provider value={{updateDatas}}>
-            <LoadingContext.Provider value={{setNowLoadingEntries, setNowLoadingStatistics}}>
               <InputForm></InputForm>
-            </LoadingContext.Provider>
           </updateContext.Provider>
         </Paper>
         <Paper sx={{ width: "100%", p:`${!isMobile ? "2em" : "1em" }` }} elevation={3}>
@@ -115,15 +114,14 @@ const App = () => {
           <EntriesContext.Provider value={{entries, setEntries}}>
             <MonthContext.Provider value={{month, setMonth}}>
               <updateContext.Provider value={{updateDatas}}>
-                <LoadingContext.Provider value={{setNowLoadingEntries, setNowLoadingStatistics}}>
                   <ShowEntries />
-                </LoadingContext.Provider>
               </updateContext.Provider>
             </MonthContext.Provider>
           </EntriesContext.Provider>
         </Paper>
         </Stack>
       </Container>
+      </LoadingContext.Provider>
     </>
   )
 }
